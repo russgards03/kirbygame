@@ -117,14 +117,14 @@
         const resetButton = document.getElementById('resetButton');
 
         resetButton.addEventListener('click', function() {
-        player1.x = 50;
-        player1.y = 50;
-        player2.x = 500;
-        player2.y = 50;
-        message.textContent = '';
-        drawPlayers(); 
-        window.addEventListener('keydown', handleKeydown); 
-    });
+            player1.x = 50;
+            player1.y = 50;
+            player2.x = 500;
+            player2.y = 50;
+            message.textContent = '';
+            drawPlayers(); 
+            window.addEventListener('keydown', handleKeydown); 
+        });
 
         const player1Image = new Image();
         player1Image.src = 'img/kirby.png';
@@ -223,6 +223,7 @@
 
         function animateSpawn(player, targetX, targetY) {
             const startX = player.x;
+            const startY = player.y;
             const duration = 500;
             const startTime = performance.now();
 
@@ -231,6 +232,7 @@
                 const progress = Math.min(elapsedTime / duration, 1);
 
                 player.x = startX + (targetX - startX) * progress;
+                player.y = startY + (targetY - startY) * progress;
 
                 drawPlayers();
 
