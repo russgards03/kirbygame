@@ -83,17 +83,20 @@
     <div id="bgkirby"></div>
     <div id="logo"></div>
     <audio id="bgm" autoplay>
-        <source src="bg/bgm.mp3" type="audio/mpeg">
+        <source src="bgm/bgm.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
     <button id="resetButton">Restart Game</button>
     <button onclick="window.location.href='index.html'">Main Menu</button>
+
+    <button id="nextLevelButton" style="display: none;">Next Level</button>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const message = document.getElementById('message');
         const resetButton = document.getElementById('resetButton');
+        const nextLevelButton = document.getElementById('nextLevelButton');
 
         resetButton.addEventListener('click', function() {
             player1.x = 50;
@@ -106,6 +109,11 @@
 
         const player1Image = new Image();
         player1Image.src = 'img/kirby.png';
+
+        nextLevelButton.addEventListener('click', function() {
+            // Reset for the next level
+            setupNextLevel();
+        });
 
         const player1 = {
             x: 50,
@@ -242,10 +250,21 @@
         }
 
         function checkWin(player) {
-            return (player.x < finishLine.x + finishLine.width &&
-                    player.x + player.width > finishLine.x &&
-                    player.y < finishLine.y + finishLine.height &&
-                    player.y + player.height > finishLine.y);
+            // Check if all apples are collected
+            const allApplesCollected = apples.every(apple => apple.collected);
+
+            // Check if Kirby reaches the finish line and all apples are collected
+            if (allApplesCollected &&
+                player.x < finishLine.x + finishLine.width &&
+                player.x + player.width > finishLine.x &&
+                player.y < finishLine.y + finishLine.height &&
+                player.y + player.height > finishLine.y) {
+                message.textContent = 'Player 1 (Kirby) Wins! Final Score: ' + player.score;
+                window.removeEventListener('keydown', handleKeydown);
+
+                // Show the Next Level button
+                nextLevelButton.style.display = 'inline-block';
+            }
         }
 
         function movePlayer(player, newX, newY) {
@@ -262,7 +281,7 @@
             }
 
             if (checkWin(player)) {
-                message.textContent = 'Player 1 (Kirby) Wins! Final Score: ' + player.score;
+                message.textContent = 'You Win! Final Score: ' + player.score;
                 window.removeEventListener('keydown', handleKeydown);
             } else {
                 drawPlayers();
@@ -296,6 +315,36 @@
             } else if (e.key === 'ArrowRight') {
                 movePlayer(player1, player1.x + player1.speed, player1.y);
             }
+        }
+
+        function setupNextLevel() {
+            // Reset player position and score if needed
+            player1.x = 50;
+            player1.y = 50;
+
+            // Set up a new map with different walls and apples
+            walls.splice(0, walls.length, 
+                { x: 0, y: 0, width: 600, height: 1 },
+                { x: 0, y: 0, width: 1, height: 150 },
+                // Add new walls for the next level
+                { x: 200, y: 300, width: 200, height: 10 },
+                { x: 400, y: 450, width: 10, height: 150 }
+            );
+
+            // Add new apples for the next level
+            apples = [
+                { x: 150, y: 100, width: 30, height: 30, collected: false },
+                { x: 300, y: 200, width: 30, height: 30, collected: false },
+                { x: 450, y: 300, width: 30, height: 30, collected: false },
+                { x: 200, y: 500, width: 30, height: 30, collected: false }
+            ];
+
+            // Hide the Next Level button
+            nextLevelButton.style.display = 'none';
+
+            // Update the canvas with the new level
+            drawPlayers();
+            window.addEventListener('keydown', handleKeydown); // Re-enable movement
         }
 
         window.addEventListener('keydown', handleKeydown);

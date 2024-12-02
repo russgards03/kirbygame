@@ -24,6 +24,7 @@
             font-size: 50px;
             margin-bottom: 30px;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            color: pink;
         }
         button {
             font-size: 20px;
@@ -32,7 +33,7 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            background-color: #FF6E6E;
+            background-color: rgb(82, 5, 117);
             color: white;
             transition: all 0.3s ease;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
@@ -40,15 +41,27 @@
         button:hover {
             background-color: #FF4B4B;
         }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            background-color: #0696a0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <body>
-    <h1>Kirby Maze Game</h1>
-    <button onclick="window.location.href='1player.html'">1 Player Mode</button>
-    <button onclick="window.location.href='2player.html'">2 Player Mode</button>
-    <audio id="bgm" autoplay>
-        <source src="bg/bgm.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+    <div class="container">
+        <h1>Kirby Maze Game</h1>
+        <button onclick="window.location.href='1player.html'">1 Player Mode</button>
+        <button onclick="window.location.href='2player.html'">2 Player Mode</button>
+        <audio id="bgm" autoplay>
+            <source src="bgm/bgm.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
 </body>
 </html>
