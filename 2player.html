@@ -91,6 +91,27 @@
             50% { left: 1400px; top: 270px; }
             100% { left: 1500px; top: 240px; }
         }
+        button {
+            font-size: 20px;
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background-color: rgb(82, 5, 117);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        button:hover {
+            background-color: #FF4B4B;
+        }
+        #button-container {
+            display: flex;
+            justify-content: right;
+            align-items: right;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -103,12 +124,14 @@
     <div id="bgkirby"></div>
     <div id="bgmetaknight"></div> 
     <div id="logo"></div>
-    <audio id="bgm" autoplay>
+    <audio id="bgm" autoplay loop>
         <source src="bgm/bgm.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-    <button id="resetButton">Restart Game</button>
-    <button onclick="window.location.href='index.html'">Main Menu</button>
+    <div id="button-container">
+        <button id="resetButton">Restart Game</button>
+        <button onclick="window.location.href='index.html'">Main Menu</button>
+    </div>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -202,12 +225,16 @@
             ctx.fillRect(finishLine.x, finishLine.y, finishLine.width, finishLine.height);
         }
 
+        const collideSound = new Audio('bgm/collide.mp3');
+
         function checkCollision(x, y, player) {
             for (const wall of walls) {
                 if (x < wall.x + wall.width &&
                     x + player.width > wall.x &&
                     y < wall.y + wall.height &&
                     y + player.height > wall.y) {
+                    // Play the collide sound
+                    collideSound.play();
                     return true;
                 }
             }
